@@ -1,0 +1,17 @@
+[project]
+name = "assay"
+version = "0.1.0"
+description = "A neutral testbed for model distillation attribution"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["torch", "transformers", "datasets", "numpy"]
+
+[project.scripts]
+assay = "assay.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["assay"]

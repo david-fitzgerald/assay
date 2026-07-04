@@ -1,0 +1,6 @@
+# assay spike (increment 1). Install torch from the CPU or a CUDA index as appropriate:
+#   pip install torch --index-url https://download.pytorch.org/whl/cpu
+torch
+transformers
+datasets
+numpy

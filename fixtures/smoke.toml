@@ -1,0 +1,29 @@
+# Fast plumbing smoke — tiny scale, proves the spine runs end-to-end WITHOUT the
+# ~15-min full train. Does NOT clear 6σ (too little exposure); use skeleton.toml
+# for the authoritative σ>6 verification.
+
+[models]
+teacher = "gpt2"
+student_base = "distilgpt2"
+
+[source]
+corpus_split = "train"
+n_corpus = 96
+
+[mark]
+scheme = "trapstreet"
+key = 15485863
+n_traps = 16
+reps = 4
+
+[attack]
+epochs = 1
+batch = 32
+lr = 5e-5
+
+[eval]
+decoy_keys = [3, 5, 7, 11, 13, 17]
+threshold = 6.0
+
+[seeds]
+global = 0

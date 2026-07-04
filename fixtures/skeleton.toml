@@ -1,0 +1,28 @@
+# Walking-skeleton RunSpec — the reference trap-street cell at 82M scale.
+# Reproduces the spike's naive trap-street radioactivity result (~11σ).
+
+[models]
+teacher = "gpt2"
+student_base = "distilgpt2"
+
+[source]
+corpus_split = "train"
+n_corpus = 2000
+
+[mark]
+scheme = "trapstreet"
+key = 15485863
+n_traps = 64
+reps = 8
+
+[attack]
+epochs = 3
+batch = 32
+lr = 5e-5
+
+[eval]
+decoy_keys = [3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59]
+threshold = 6.0
+
+[seeds]
+global = 0
