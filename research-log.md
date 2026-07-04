@@ -575,3 +575,42 @@ the "marker" plug generalizes to a "signal miner" plug (trap-street idiosyncrasy
 tie-break, hallucination-match, CKA-ancestry, …). Reshapes T-004: the single-signal spike is
 step 1 (does ANY natural signal separate +/−); the regression-with-covariates is the real
 build once ≥2 signals exist and the small-scale zoo is constructed.
+
+## 2026-07-04 — Multi-parentage: paternity → ADMIXTURE (23andMe-for-models)
+
+Operator: real distillation is not single-teacher. A frontier open model is likely distilled
+from SEVERAL teachers (Opus + GPT-5.x + maybe Gemini) plus its base. "Which one parent" is the
+wrong question — it's a MIXTURE.
+
+**The analogy shifts paternity → admixture.** Population genetics already splits these: a
+paternity test names one father; ADMIXTURE analysis decomposes a genome into proportions of
+ancestral populations ("40% X, 30% Y, 30% Z" — 23andMe). assay's output should be the same:
+not "distilled from Opus (y/n)" but a per-candidate CONTRIBUTION profile across a teacher panel.
+
+**The machinery already accommodates it** — a mixture is just multiple teacher-covariates with
+non-zero coefficients. The multi-signal regression becomes a DECONVOLUTION: express the
+suspect's fingerprint as a non-negative combination of candidate-teacher fingerprints + base +
+residual (non-negative least squares). Argmax classification → proportion estimation. The
+output gets RICHER and more viral, not weaker: "this model is a blend of these three" beats
+"this came from Opus."
+
+**Three hard parts multi-parentage sharpens:**
+1. **Teacher-vs-teacher identifiability (collinearity, worse).** If two candidate teachers are
+   themselves similar (Opus/GPT may share idiosyncrasies), their columns are collinear and the
+   regression can't split "how much Opus vs how much GPT." Detection (WAS it distilled) may be
+   robust while attribution (from WHICH teacher, in what proportion) has wide CIs. Need signals
+   that DISCRIMINATE between teachers, not just detect distillation. State honestly: "distilled
+   from this SET" is more defensible than "these exact proportions."
+2. **Panel completeness + a mandatory RESIDUAL bucket.** If a true parent is missing from the
+   panel, a naive mixture misattributes its signal onto the nearest included teacher — the
+   false-accusation failure mode. Every mixture MUST carry an "unexplained residual / other"
+   fraction (admixture's unassigned component). This is the no_call/ambiguous guardrail
+   generalized: the tool must be able to say "30% of this fingerprint is explained by no
+   candidate in the panel."
+3. **Minor parents = dilution.** A 10%-contribution teacher is a weak signal — reconnects to
+   the dilution floor; small contributors may fall below detection.
+
+**Product:** PaternityReport → AdmixtureReport {per-candidate contribution + CI, unexplained
+residual}. Demo: "45% Opus-like, 25% GPT-like, 30% unexplained" = 23andMe-for-models, a
+stronger HN artifact than single-parent. **Zoo impact:** the labelled zoo now needs multi-
+teacher students (distil from 2 teachers in KNOWN proportion) to validate mixture recovery.

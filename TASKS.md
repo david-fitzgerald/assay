@@ -31,6 +31,8 @@
 - [ ] .2 Make-or-break: survive ancestry confound (same-base non-distilled) — the rung that killed passive CKA
 - [ ] .3 Multi-signal regression: ≥2 orthogonal signals + confounds as covariates (CKA = ancestry covariate)
 - [ ] .4 Build small-scale labelled zoo decoupling the confound axes (lab/era/data/base) to fit + calibrate
+- [ ] .5 Admixture: deconvolution (NNLS) → per-teacher contribution + CI + mandatory unexplained-residual bucket
+- [ ] .6 Zoo: multi-teacher students (distil from 2 teachers, known proportion) to validate mixture recovery
 
 ### T-002 — Explore copyright/training-data attribution adjacency · P3
   for: user · src: you · done: dilution curve run on greenlist rig OR explicit kill decision logged in research-log.md
