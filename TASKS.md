@@ -3,11 +3,14 @@
 <!-- NOW-START -->
 ## Now
 
-- Next:  T-003.1 — Confirm full-scale skeleton smoke reproduces σ>6 through the productized code (running)
-- Soon:  T-003.2 — Add green-list as 2nd reference scheme — proves the Marker/Detector contract is scheme-agnostic
-         T-003.3 — paternity command + PaternityReport (no_call/ambiguous abstain) — the model-paternity-test demo
-         T-003.4 — bench command + scorecard over the frozen reference cells (SPEC Appendix)
+- Next:  T-003.3 — paternity command + PaternityReport (no_call/ambiguous abstain) — the model-paternity-t… (see T-NNN)
+- Soon:  T-003.5 — One-command <3min quickstart (tiny-model preset / precomputed) — remove the first-run friction wall
+         T-003.6 — Demo-led README (lead with paternity output + laundering number) + asciinema/GIF
+         T-003.2 — Green-list as 2nd reference scheme — proves the Marker/Detector contract is scheme-agnostic
 - Later:
+         T-003.4 — bench command + scorecard over the frozen reference cells (SPEC Appendix)
+         T-004.1 — Natural-trap-street spike: mine gpt2 arbitrary argmax; distilgpt2(+) vs pythia(−); cali… (see T-NNN)
+         T-004.2 — Make-or-break: survive ancestry confound (same-base non-distilled) — the rung that killed passive CKA
          T-002.1 — Sweep detection power vs mix proportion on the existing rig (traps at known %, fine-tun… (see T-NNN)
          T-002.2 — Test dedup-as-accidental-launderer: does standard dedup strip the trace? (see research-… (see T-NNN)
 
@@ -16,10 +19,16 @@
 ## Tasks
 ### T-003 — Skeleton → v0.2 full bench · P1
   for: user · src: you · done: green-list scheme + paternity + bench land, each passing its SPEC acceptance row
-- [ ] .1 Confirm full-scale skeleton smoke reproduces σ>6 through the productized code (running)
-- [ ] .2 Add green-list as 2nd reference scheme — proves the Marker/Detector contract is scheme-agnostic
-- [ ] .3 paternity command + PaternityReport (no_call/ambiguous abstain) — the model-paternity-test demo
+- [ ] .3 paternity command + PaternityReport (no_call/ambiguous abstain) — the model-paternity-test demo (HN hook)
+- [ ] .5 One-command <3min quickstart (tiny-model preset / precomputed) — remove the first-run friction wall
+- [ ] .6 Demo-led README (lead with paternity output + laundering number) + asciinema/GIF
+- [ ] .2 Green-list as 2nd reference scheme — proves the Marker/Detector contract is scheme-agnostic
 - [ ] .4 bench command + scorecard over the frozen reference cells (SPEC Appendix)
+
+### T-004 — Passive no-injection distillation detection — the viral bet · P1
+  for: user · src: you · done: passive distilled-vs-independent separable at calibrated FPR — logged Yes/No + evidence
+- [ ] .1 Natural-trap-street spike: mine gpt2 arbitrary argmax; distilgpt2(+) vs pythia(−); calibrate vs decoy null
+- [ ] .2 Make-or-break: survive ancestry confound (same-base non-distilled) — the rung that killed passive CKA
 
 ### T-002 — Explore copyright/training-data attribution adjacency · P3
   for: user · src: you · done: dilution curve run on greenlist rig OR explicit kill decision logged in research-log.md

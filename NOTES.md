@@ -42,7 +42,9 @@ Moved `ideas/assay → projects/assay`, `git init` on `main` (noreply committer,
 
 RunSpec unknowns resolved: TOML (stdlib tomllib, no dep); the config cleanly drove all three interfaces (no leak); rig code (`train`, `trap_stats`, `make_plausible` facts) factored cleanly into the interface modules.
 
-Next: confirm full smoke σ>6, then **push to public GitHub** (pending user go), then v0.2 (green-list 2nd scheme → proves scheme-agnosticism; paternity CLI; bench).
+**Skeleton VERIFIED** (2026-07-04): full-scale smoke through the productized code → **σ=12.75, DETECTED**, reproducing the spike's trap-street 11.28σ (delta = different random teacher corpus; mechanism preserved). All 3 verification gates green: fail-closed + plumbing + full-scale reproduction. **Pushed to public GitHub: github.com/david-fitzgerald/assay** (ebbc0ed + 143fc9e).
+
+Next (HN-readiness, per user): the hook — `assay paternity` demo (T-003.3) — is the load-bearing gap for a Show HN post; skeleton alone is half-built for a reader. Priority build: paternity demo → one-command <3min quickstart → demo-led README → asciinema/GIF. Then green-list 2nd scheme (T-003.2). Assessment in this session's transcript.
 
 Blockers: none.
 

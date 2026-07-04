@@ -484,3 +484,51 @@ height via injection dose / trap count. Robustness envelope: light continued tra
 heavy distill-then-retrain-on-clean is where the mark degrades below the strict bar at toy
 scale. NOT-RUN roadmap hypothesis (per 6-test scope): scale x continued-finetune cross to
 confirm the envelope lifts with size. Gauntlet 6/6 done — gauntlet COMPLETE.
+
+## 2026-07-04 — Strategic pivot candidate: PASSIVE (no-injection) detection — "natural trap-streets"
+
+Operator insight (load-bearing for adoption): every scheme built so far is ACTIVE — the
+defender must inject a keyed mark into the teacher's outputs BEFORE harvesting. That caps
+adoption hard: only the teacher's owner (a frontier lab), only going forward, never
+retroactively. It cannot answer "is DeepSeek distilled from GPT-4?" because nobody planted
+a mark. The viral version is PASSIVE: anyone probes a suspect, no prior injection, detects
+lineage retroactively — "run this to see what a released model was distilled from."
+
+**The bridge (why this isn't a new project — it's a marker→miner swap):** trap-street works
+because a distilled student inherits the teacher's SPECIFIC claims. Active trap-street
+INJECTS fabricated claims. But every model ALREADY carries thousands of idiosyncratic
+behaviours no injection created — distinctive hallucinations, specific wrong dates, and
+(the sharpest signal) ARBITRARY tie-breaks on underspecified prompts (its temp-0 preferred
+completion among equivalents). The passive fingerprint = the teacher's EXISTING distinctive
+behaviours used as an un-injected trap set. **Detection is the identical machinery** (probe
+with a prefix, check if the suspect matches the teacher's specific behaviour, calibrate
+against a decoy-MODEL null) — only the "marker" becomes a "miner".
+
+**Why it might work where passive CKA failed (increment 1):** CKA measured GEOMETRIC
+similarity — diffuse, dominated by shared ancestry (all GPT-family models share geometry),
+which is exactly why it lost rung 2. Distinctive-BEHAVIOUR matching is SPECIFIC and
+idiosyncratic: an arbitrary tie-break or a particular hallucinated detail is unlikely to be
+independently reproduced by a same-base non-distilled model. That sharpness is the property
+that let active trap-street beat the ancestry confound (confound student 0.69σ). The bet is
+it transfers to the passive/natural setting.
+
+**The honest make-or-break (do NOT hand-wave):** the ancestry confound is the EXACT rung
+that killed passive CKA. Two models sharing a base or training data may share some
+distinctive behaviours. Whether arbitrary-tie / hallucination signal is idiosyncratic enough
+to survive same-base non-distilled controls is unproven — and is the whole ballgame, again.
+Prior art exists (behavioural fingerprinting, self-ID leakage, "distillation detection");
+the contribution is the CALIBRATED, adversarial, open testbed, not the raw idea.
+
+**Cheap experiment (reuses the existing detector, ~1 day):** teacher gpt2; positive =
+distilgpt2 (known distilled from gpt2); negative = pythia-160m (independent). Build a probe
+set of prefixes where gpt2's argmax is arbitrary/distinctive; score whether distilgpt2
+matches gpt2's arbitrary choices more than pythia does, calibrated vs a decoy-model null.
+Signal → then the make-or-break same-base non-distilled control. Tracked: T-004.
+
+**EV / sequencing:** ~1 day of compute to test whether the VIRAL version is real. If yes,
+THAT is the Show HN ("probe any model for its teacher — no cooperation needed"), ~10× the
+traction of the active paternity test, and it slots into the same bench as the passive
+Detector row. If it dies on the confound (like CKA), the active paternity test remains the
+headline. Recommend running the passive spike BEFORE committing to the active-demo HN push —
+it decides which is the hook. This is the "add → don't-add / passive fingerprinting" branch
+noted-and-deferred in the 2026-07-03 mechanism menu; adoption pressure promotes it to first.
