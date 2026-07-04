@@ -532,3 +532,46 @@ Detector row. If it dies on the confound (like CKA), the active paternity test r
 headline. Recommend running the passive spike BEFORE committing to the active-demo HN push —
 it decides which is the hook. This is the "add → don't-add / passive fingerprinting" branch
 noted-and-deferred in the 2026-07-03 mechanism menu; adoption pressure promotes it to first.
+
+## 2026-07-04 — Passive detection, evolved: multi-signal regression with confounds as covariates (the forensic framing)
+
+Operator upgrade to the passive bet: don't rely on ONE natural signal (which drowns in
+ancestry, as CKA did). Use MANY orthogonal idiosyncrasy signals AND model the confounds
+EXPLICITLY as covariates. Divide traits into groups by what explains them — same-lab,
+same-training-era, same-known-data, same-base — and regress the signals on those confounds.
+The distillation-specific evidence is the RESIDUAL that no known confound explains; combine
+the surviving orthogonal signals in a regression / likelihood ratio for a calibrated verdict.
+
+**This is the forensic / DNA-profiling playbook, re-derived.** DNA attribution is exactly
+this: many independent loci (orthogonal signals), population substructure (the ancestry
+confound) controlled via population-frequency priors, a combined likelihood ratio → a
+calibrated random-match probability. assay's passive detector becomes: many behavioural
+markers + confound covariates + a combined calibrated LR. That is a genuinely novel OPEN
+contribution — nobody ships a calibrated, confound-controlled, multi-signal distillation-
+attribution bench.
+
+**The elegant flip — CKA is rehabilitated.** CKA failed as a distillation SIGNAL because it
+measures shared-ancestry geometry. But that is precisely the confound you must control for.
+So CKA is not dead: it flips from "failed distillation detector" to an **ancestry COVARIATE**
+— use it to estimate shared-base/shared-corpus similarity, partial it out, and read the
+distillation-specific residual in the behavioural signals. The increment-1 negative becomes
+a component of the positive.
+
+**The load-bearing hard part (devil's advocate, do not skip):** to FIT and CALIBRATE the
+regression you need labelled ground truth spanning every confound axis — known-distilled,
+known-same-lab-not-distilled, known-same-era, known-same-data, known-independent. Chicken-
+and-egg at frontier scale (provenance is exactly what's unknown). Resolution: build the
+labelled model ZOO at small scale (self-construct all axes — distil students, train same-base
+siblings, same-data-different-init, etc.), fit + validate the regression there, ship it as
+"calibrated attribution on constructed ground truth," apply to frontier as measurement with
+the extrapolation caveat. Two more design constraints: (1) confounds are collinear in
+practice (a lab trains in an era on its data) — the zoo must DECOUPLE the axes (same-lab
+different-era, etc.) or the regression can't separate them; (2) signals must be verified
+independent, not three views of one RLHF-style axis.
+
+**What it does to the architecture:** the Detector interface gains a multi-signal combine +
+confound-adjust + calibrate layer; the confound axes become explicit covariates in the bench;
+the "marker" plug generalizes to a "signal miner" plug (trap-street idiosyncrasy, arbitrary-
+tie-break, hallucination-match, CKA-ancestry, …). Reshapes T-004: the single-signal spike is
+step 1 (does ANY natural signal separate +/−); the regression-with-covariates is the real
+build once ≥2 signals exist and the small-scale zoo is constructed.

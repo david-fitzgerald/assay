@@ -11,8 +11,8 @@
          T-003.4 — bench command + scorecard over the frozen reference cells (SPEC Appendix)
          T-004.1 — Natural-trap-street spike: mine gpt2 arbitrary argmax; distilgpt2(+) vs pythia(−); cali… (see T-NNN)
          T-004.2 — Make-or-break: survive ancestry confound (same-base non-distilled) — the rung that killed passive CKA
-         T-002.1 — Sweep detection power vs mix proportion on the existing rig (traps at known %, fine-tun… (see T-NNN)
-         T-002.2 — Test dedup-as-accidental-launderer: does standard dedup strip the trace? (see research-… (see T-NNN)
+         T-004.3 — Multi-signal regression: ≥2 orthogonal signals + confounds as covariates (CKA = ancestry covariate)
+         T-004.4 — Build small-scale labelled zoo decoupling the confound axes (lab/era/data/base) to fit + calibrate
 
 <!-- NOW-END -->
 
@@ -29,6 +29,8 @@
   for: user · src: you · done: passive distilled-vs-independent separable at calibrated FPR — logged Yes/No + evidence
 - [ ] .1 Natural-trap-street spike: mine gpt2 arbitrary argmax; distilgpt2(+) vs pythia(−); calibrate vs decoy null
 - [ ] .2 Make-or-break: survive ancestry confound (same-base non-distilled) — the rung that killed passive CKA
+- [ ] .3 Multi-signal regression: ≥2 orthogonal signals + confounds as covariates (CKA = ancestry covariate)
+- [ ] .4 Build small-scale labelled zoo decoupling the confound axes (lab/era/data/base) to fit + calibrate
 
 ### T-002 — Explore copyright/training-data attribution adjacency · P3
   for: user · src: you · done: dilution curve run on greenlist rig OR explicit kill decision logged in research-log.md
