@@ -1,5 +1,19 @@
 # assay/ Session Notes
 
+## 2026-07-04 — SESSION CLOSE: idea → shipped public OSS in one arc
+
+Biggest single session on assay. Full arc: finished the G2 spike (6-test adversarial gauntlet, 5 pass + 1 documented robustness limit) → G3 SPEC (codex 5-round plan-reviewed, v1.0) → G4 skeleton locked → G5 verify → **graduated `ideas/assay` → `projects/assay`** → built + verified the walking skeleton (σ=12.75 through productized code, reproduces the spike) → **pushed public: github.com/david-fitzgerald/assay**. Then a strategic thread with operator: the ACTIVE marker hits an adoption ceiling (frontier-lab-only, forward-only), so the direction pivots to PASSIVE no-injection attribution → multi-signal regression w/ confounds as covariates (forensic/DNA framing; CKA rehabilitated as an ancestry covariate) → ADMIXTURE (multi-teacher, 23andMe-for-models, mandatory residual bucket). Captured in `ROADMAP.md` + `research-log.md`.
+
+Key decisions:
+- Trap-street (semantic keyed facts) is the reference marker — survives laundering where token watermarks die; the mark is the claim, not the tokens.
+- Decoy-key empirical null is mandatory in the Detector contract (uncalibrated → false-convicts innocents).
+- Plausible-payload constraint (real words, fabricated combination) — hard rule for semantic keyed-fact schemes.
+- Pivot direction is passive/admixture; but gated on a cheap single-signal spike (T-004.1) that decides the HN headline.
+
+What's next (ordered): **T-004 passive spike tomorrow** (does any natural signal separate distilled from independent, and survive the ancestry confound — the make-or-break). Then finish the active bench to HN-ready (T-003: paternity demo → quickstart → README/GIF → green-list). Post order branches on T-004's result.
+
+Blockers: none.
+
 ## 2026-07-04 — Gauntlet 1/6 (adaptive adversary): blatant traps fail, plausible traps beat it
 
 The tier-1 test that could have flipped trap-street. Adversary filters the corpus before training. **Blatant syllable-fabricated traps FAIL even to standard perplexity hygiene** (73% stripped, attribution 11.28σ→3.22σ killed) and 100% to a targeted novelty filter. **Plausible traps (real common words, fabrication in the combination) BEAT it**: attribute at 10.67σ, evade novelty (11% flagged vs 100%, ≈0% with real KB), halve perplexity removal (41% vs 73%). Verdict: trap-street survives the adaptive adversary IFF the payload is plausible — the map-maker's rule (fakes must look real) recovered as a validated design constraint. Bench found a real flaw AND the fix, pre-SPEC. New rigs: `adaptive_rig.py` (filters), `plausible_rig.py` (fix). Full analysis research-log 2026-07-04. Loose end (not a blocker): plausible-under-perplexity-filter not directly measured (59% survive vs blatant 27%; test 4 template-variation lowers the ppl signature).
