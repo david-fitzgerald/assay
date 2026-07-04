@@ -48,6 +48,7 @@ pip install torch transformers datasets numpy
 | Path | What |
 |---|---|
 | [`SPEC.md`](SPEC.md) | The contract — interfaces, acceptance criteria, decisions |
+| [`ROADMAP.md`](ROADMAP.md) | Where it's heading — passive, no-injection attribution (the bet) |
 | [`research-log.md`](research-log.md) | The full experimental trail and every measured number |
 | `scratch/` | The throwaway spike rigs the skeleton refactors from |
 
