@@ -34,7 +34,15 @@ Consolidated the gate record: **G2 PASS** (graduation-tracking updated — the C
 
 **G4** (skeleton locked): thinnest slice = RunSpec → trap-street mark → distill → detect(decoy-null) → calibrated-σ Verdict, on the one validated path at 82M. Cut list (longer than skeleton): green-list scheme, launder/filter/continue_train stages, paternity, bench, scale, JSON, fixture digests, stage-order enforcement — all v0.2+. Unknowns: does RunSpec drive all 3 interfaces cleanly; how much rig code factors; packaging. Buildable 1-2 sessions (refactor of proven code). **G5** (verify): verification plan maps each acceptance row to a test (skeleton = marker-sanity + radioactivity-smoke + fail-closed-failure-test; rest v0.2+); smoke = one command driving the spine (`assay detect --runspec skeleton.yaml`, exits 0 iff σ>6); failure test = detect-without-decoy MUST raise; HARNESS L0 drafted (public GitHub `assay`, gitignore keeps weights out, AGENTS code sections, HF_TOKEN-only .env.example). Full record: graduation-tracking.md.
 
-**ALL 5 GATES PASS.** Phase → ready to graduate. Next action (needs greenlight — it's the leave-planning-start-building step): move folder ideas/assay → projects/assay, git init (public), complete L0, build the walking skeleton.
+**ALL 5 GATES PASS.**
+
+## 2026-07-04 — GRADUATED + walking skeleton v0.1 built + committed
+
+Moved `ideas/assay → projects/assay`, `git init` on `main` (noreply committer, GH007-safe). L0 complete: `.gitignore` (weights/corpora/`.claude` out), `.env.example` (HF_TOKEN only), simple public `README.md`, AGENTS.md code sections (Quick Reference / Environment / Architecture / Verification). **Walking skeleton built** (`assay/`): `runspec` (TOML config, stdlib) → `corpus` (teacher-generate + trap-street mark) → `attack` (distill) → `detector` (decoy-null → Verdict), CLI `mark/attack/detect`, refactored behavior-preserving from the rigs. `pyproject.toml` (pip-installable, `assay` entrypoint). **Verified**: fail-closed detect (empty decoy → raises) PASS; plumbing smoke (`fixtures/smoke.toml`, tiny scale) drives the full spine end-to-end (σ=1.53, correctly below bar, exit 1). Committed `ebbc0ed` (33 files, no weights). **Full-scale σ>6 reproduction through the productized code running** (`fixtures/skeleton.toml`, ~15 min) — confirms the refactor preserves the spike's ~11σ.
+
+RunSpec unknowns resolved: TOML (stdlib tomllib, no dep); the config cleanly drove all three interfaces (no leak); rig code (`train`, `trap_stats`, `make_plausible` facts) factored cleanly into the interface modules.
+
+Next: confirm full smoke σ>6, then **push to public GitHub** (pending user go), then v0.2 (green-list 2nd scheme → proves scheme-agnosticism; paternity CLI; bench).
 
 Blockers: none.
 
