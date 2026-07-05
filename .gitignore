@@ -17,3 +17,6 @@ dist/
 
 # Harness / editor local state
 .claude/
+
+# Bulky raw eval dumps (regenerable from the harnesses)
+scratch/*_raw.json

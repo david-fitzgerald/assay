@@ -1,20 +1,20 @@
 # assay — Research Log
 
-Durable record of the reasoning behind assay's design. Session-seeded; append forward. NOTES.md is bookkeeping; this is the intellectual trail — why the method is what it is, and what was considered and rejected.
+Durable record of the reasoning behind assay's design — the intellectual trail: why the method is what it is, and what was considered and rejected. Reverse-chronological within; read top-to-bottom for the arc, bottom entries for the latest findings.
 
 ---
 
 ## 2026-07-03 — Method exploration; representation-space attribution chosen as first core play
 
-### The primitive: kestrel (sympal) ↔ trace (assay), and where it breaks
+### The primitive: a keyed secret, and where attribution diverges from privacy
 
-assay was found by asking where sympal's "kestrel" primitive generalizes. The honest shared primitive is **thin**: a keyed secret held by one party, imperceptible to observers, verifiable only by the holder. Past that they diverge, and an early framing ("same single-use keyed randomness, sign-flipped") was an **overclaim** — corrected here:
+assay generalizes a keyed-secret primitive — a secret held by one party, imperceptible to observers, verifiable only by the holder. But attribution inverts a privacy tool built on the same primitive, and an early framing ("same single-use keyed randomness, sign-flipped") was an **overclaim** — corrected here:
 
-- **Lifecycle inverts.** sympal *destroys* the mapping each session — single-use is the anti-correlation property (ephemerality = privacy). assay must *persist* the key, because the defender detects the trace weeks later in a suspect model (persistence = attributability). The "single-use" part is exactly what does **not** carry over.
-- **Mechanism differs.** sympal *substitutes* identified entity spans and losslessly *rehydrates*. assay *biases a distribution* (or an internal geometry) and detects it *statistically* — there is nothing to reverse; the mark is an intended skew.
-- **Ledger holder flips.** sympal's user holds it to *hide*; assay's defender holds it to *prove*.
+- **Lifecycle inverts.** A privacy use *destroys* the mapping each session (ephemerality = privacy). assay must *persist* the key, because the defender detects the trace weeks later in a suspect model (persistence = attributability). The "single-use" part is exactly what does **not** carry over.
+- **Mechanism differs.** A privacy tool *substitutes* identified spans and losslessly *rehydrates*. assay *biases a distribution* (or an internal geometry) and detects it *statistically* — there is nothing to reverse; the mark is an intended skew.
+- **Ledger holder flips.** In privacy the holder uses the key to *hide*; assay's defender holds it to *prove*.
 
-Same idea family, opposite lifecycle, different math. Cross-reference sympal only at the primitive level, not the mechanism.
+Same idea family, opposite lifecycle, different math.
 
 ### Trace injection mechanics (the baseline the core play moves past)
 
@@ -614,3 +614,175 @@ output gets RICHER and more viral, not weaker: "this model is a blend of these t
 residual}. Demo: "45% Opus-like, 25% GPT-like, 30% unexplained" = 23andMe-for-models, a
 stronger HN artifact than single-parent. **Zoo impact:** the labelled zoo now needs multi-
 teacher students (distil from 2 teachers in KNOWN proportion) to validate mixture recovery.
+
+## 2026-07-05 — T-004.1 ran: passive base-model signal NULL; RLHF-opinion channel also NULL (well-powered)
+
+Two spikes, two honest negatives — plus a sharper diagnosis of WHERE the passive signal
+must live. Scratch: `passive_rig.py`, `passive_idio.py` (base-model, local),
+`passive_or.py` + `items_gen.json` (RLHF-behavioural, black-box via OpenRouter).
+
+**Spike A — base-model arbitrary-argmax (local, gpt2 family).** Mine prefixes where gpt2's
+next token is underdetermined (high entropy, low margin); score whether distilgpt2 matches
+gpt2's arbitrary pick more than an independent panel (pythia-70m/160m, gpt-neo-125m,
+opt-125m). Tokenizer-fairness guard: never compare token IDs (distilgpt2 shares gpt2's vocab,
+the others don't) — score every model on gpt2's top-K decoded STRINGS under its own tokenizer.
+- **Unconditioned: NULL.** distilgpt2 arb-match 0.593 vs panel 0.577±0.015 (z=1.10). The
+  distilled student sits INSIDE the independent band. Separation shows only in the DETERMINED
+  bucket (0.96 vs 0.92) = pure competence, the confound, not lineage.
+- **Conditioned on gpt2-idiosyncrasy (leakage-safe: two pythias define idiosyncrasy, neo/opt
+  held out): weak hint, sub-threshold.** distilgpt2 0.417 vs held-out independents 0.292
+  (two-proportion z=2.25, n=108) — the conditioning MOVED the needle (tied → a 12-pt gap),
+  so the method works, but the base-layer signal is a whisper below the z>3 bar.
+- **Read:** pretraining next-token idiosyncrasy carries only a faint lineage trace, swamped by
+  shared-corpus statistics all web-trained base models learn. Same structural failure as CKA
+  (passive similarity = shared training distribution, not distillation). The signal is not here.
+
+**Operator reframe (load-bearing, correct):** base models trained on similar corpora converge
+on next-token stats regardless of lineage — the signature lives in POST-TRAINING (RLHF), which
+concentrates probability mass toward a lab's preferred DIRECTIONS on contested questions. So
+probe ambiguous questions with no consensus answer; the shared directional bias is the
+fingerprint. This also fixes the venue: RLHF direction is an OUTPUT behaviour → detectable
+black-box → OpenRouter (and it puts the unrunnable 671B teacher R1 back in reach via API).
+
+**Spike B — RLHF opinion-direction, black-box (OpenRouter, $0.16 total).** Ground-truth triad,
+base confound controlled by construction: teacher `deepseek-r1`; positive
+`deepseek-r1-distill-llama-70b` (distilled FROM R1); same-base control
+`llama-3.1-70b-instruct` (identical Llama-3.1-70B base, Meta's OWN RLHF, not from R1); plus an
+independent floor (gpt-4o-mini, qwen-2.5-72b). 105 forced-choice contested items (24 hand + 81
+generated by a neutral model, empirically filtered to the 37 the panel actually splits on).
+Metric: agreement with R1 on contested items; paired bootstrap CI on positive−control.
+- **24-item pilot looked like a PASS (distill 0.833 vs control 0.500) — but n=6 contested.**
+- **105 items = NULL.** distill 0.531, control 0.455, independent floor 0.545 (qwen 0.606
+  agrees with R1 MORE than R1's own distill does). Paired positive−control gap +0.094,
+  **95% CI [−0.125, +0.312] — straddles zero.** The 0.833 was small-sample noise; scaling to
+  proper power killed it. Textbook green≠verified.
+
+**Diagnosis (the testable why): channel mismatch, not (yet) a dead thesis.** The R1-Distill
+series is an SFT distillation on ~800k of R1's REASONING traces (math/code) — no RLHF, not a
+general behavioural clone. So it never inherited R1's OPINION directions; the opinion channel
+probes something that wasn't distilled. The channel R1-Distill DID inherit is reasoning-style:
+R1's distinctive chain-of-thought stylometry ("Wait,", "Hmm,", "Let me reconsider",
+self-correction cadence, structure). **Decisive next test: the reasoning-style channel on the
+same triad.** If reasoning-stylometry separates the distill from the same-base control, the
+passive-behavioural method works and this was a channel mismatch; if it also nulls, the passive
+bet is in real trouble. Until then: active paternity test remains the shippable headline.
+
+**Method keeper:** the leakage-safe same-base triad (teacher + distill + same-base-different-
+post-training control) is the clean way to control the ancestry confound black-box, and the
+paired bootstrap CI is the honest statistic. Both carry to the reasoning-style probe.
+
+## 2026-07-05 — Refusal channel: DISCRIMINATES only coarsely; frontier teachers COLLINEAR (admixture warning, empirical)
+
+Ran the refusal-boundary channel as the gate for admixture: admixture needs a signal that not
+only detects distillation but DISCRIMINATES teachers (else teacher columns are collinear and
+proportions are unidentifiable). Refusal boundaries are the sharpest lab-idiosyncratic channel,
+so this is the best-case test. Scratch: `passive_refusal.py`, `refusal_items.json` (108
+gray-zone items). Panel = six labs as candidate teachers (R1, GPT-4o-mini, Claude-haiku-4.5,
+Gemini-2.5-flash, Qwen-72B, Llama-3.1-70B) + student R1-distill-llama-70B; Llama doubles as the
+same-base control. Each model's response judged REFUSE/PARTIAL/COMPLY by gpt-4o-mini. Black-box,
+OpenRouter, $1.21.
+
+- **Battery too tame for current models:** all six labs comply with ~93% of the "gray zone"
+  (base refuse-rate 0.045-0.083, near-identical) → only 1 item split at the strict threshold.
+  Loosened to divergence ≥0.5 → 18 divergent items (~6 driven by hand anchors).
+- **Teacher separability (18 items): frontier labs are COLLINEAR.** R1/GPT/Claude/Gemini/Qwen
+  form a tight cluster (mutual Pearson r 0.71-0.89, mean **0.78**); Llama is the permissive
+  outlier (mean r 0.47 to the cluster). You cannot decompose proportions among teachers whose
+  fingerprints correlate at 0.78 — the identifiability wall, now with data.
+- **Student:** R1-distill correlates 0.83-0.91 with ALL frontier teachers (argmax Gemini 0.91,
+  NOT R1 — noise within the cluster) but only **0.39 with its same-base Llama sibling.** So R1-SFT
+  pulled the Llama-base student OUT of the permissive-Llama cluster INTO frontier-safety-consensus
+  = a clean DETECTION signal, but NOT an ATTRIBUTION one (can't say R1 vs any frontier lab).
+
+**Verdict (AMBER-leaning-RED for admixture):** refusal is a COARSE discriminator (safety-heavy
+frontier lineage vs permissive open lineage) — real and defensible — but NOT a fine one
+(lab-vs-lab). The collinearity flagged as admixture hard-part #1 is empirically confirmed on the
+sharpest channel; frontier labs have CONVERGED on refusal norms (tracks the industry alignment
+trend). Fine admixture PROPORTIONS among the frontier teachers people care about (Opus/GPT/Gemini)
+look unidentifiable on this channel. What survives: detection + coarse frontier-vs-open clustering
+with an unexplained residual — NOT the "23andMe proportions" headline.
+
+**Caveats:** thin (18 sparse items, anchor-driven); tame battery (real frontier-divergence band is
+narrower than the gpt-4o-mini generator reached — it also cautiously tames its own "borderline"
+items, and qwen 400-refused to generate the spicy list). Confirmatory next step: a genuinely spicy
+divergence-targeted battery (real dual-use, content-policy edges, copyrighted reproduction, medical
+dosing). If frontier labs still collapse to r~0.8, admixture-among-frontier is dead; ship detection
++ coarse-lineage instead.
+
+**REVERSAL (same day, confirmatory spicy battery `refusal_items_spicy.json`, 45 hand-authored
+divergence-targeted items, $0.35):** the "collinear/admixture-dead" read above was a TAME-BATTERY
+ARTIFACT. On real contested items (refuse-rates 0.51-0.66, 19/45 split):
+- **Teacher separability REVERSES: mean off-diagonal r 0.675 → 0.126.** Frontier labs refuse
+  DISTINCT things (R1-Claude 0.38, GPT-Claude -0.05, Claude-Qwen -0.23). The discriminating signal
+  admixture needs EXISTS. The earlier collinearity was near-zero-variance noise (everyone complied
+  with 93% of the tame battery), correlating spuriously.
+- **Detection beats the same-base confound: YES.** R1-distill refusal fingerprint r 0.62 with R1
+  vs **0.08 with its own Llama base-sibling.** Same base, opposite refusal behaviour — the exact
+  ancestry confound that killed CKA, cleared on this channel. Distillation demonstrably moved the
+  student's safety behaviour off its base.
+- **Attribution SOFT (as predicted):** student argmax is GPT (0.74) not true-teacher R1 (0.62);
+  R1/GPT are the most-correlated teacher pair (0.40) and the student sits between them. "Detection
+  robust, attribution soft" for similar teachers — exactly the roadmap's stated expectation. (Weak,
+  unprovable side-note: student closer to GPT than to R1 is loosely consistent with R1's own safety
+  training being GPT-influenced.)
+
+**META-LESSON (load-bearing): battery quality dominates; two false conclusions this session from
+bad batteries** — false POSITIVE at n=6 opinion (0.833 → 0.53 at n=32), false "collinear" from the
+tame refusal battery (0.68 → 0.13 spicy). Any low-variance / small-n battery correlates spuriously
+in EITHER direction. Rule going forward: verify base-rate VARIANCE and split-count before trusting
+any agreement/correlation statistic.
+
+**Net verdict — passive/admixture REOPENS:** the two gates that mattered are GREEN — refusal
+DISCRIMINATES teachers, and detection SURVIVES the same-base ancestry confound. What stays hard is
+FINE attribution between SIMILAR teachers (R1/GPT), honestly bounded by wide CIs, not a dealbreaker.
+Buildable honest product: detect distillation → place on a discriminating teacher basis →
+proportions with wide CIs on similar teachers + mandatory residual bucket. Still THIN (19 items, one
+distillation pair) — before a real build, need (1) a 2nd known distillation pair so attribution
+isn't a single case, (2) ~50 split items so R1-vs-GPT 0.62-vs-0.74 isn't noise. Incumbents still do
+no admixture, so the wedge holds if attribution firms up.
+
+**Incumbent reality (web search, this session):** passive behavioural provenance is now a CROWDED
+2025-26 space — Model Provenance Testing (2502.00706, black-box + unrelated-model null =
+decoy-null, 90-95% precision), Who Taught You That? (2502.06659, single-teacher attribution),
++ a shipped OSS tool `model-audit` (LLMmap+DLI+REEF+stylometry, but no null calibration,
+pairwise-only, ~0 adoption). The G1 "~zero incumbents" premise is STALE for passive detection.
+No one does admixture/proportional decomposition — but this refusal result suggests why: the
+frontier-teacher collinearity may make it unidentifiable. Defensible wedge narrows to
+detection-rigor (calibrated null, adversarial laundering column) + coarse lineage; the active
+paternity test (trap-street, gauntlet-passed) is now MORE differentiated than passive.
+
+## 2026-07-05 — Refusal firming run (93 items, 3 students): separability CONFIRMED; refusal = SAFETY-lineage fingerprint
+
+The two cheap firming tests (bigger battery + 2nd/3rd students), one run. `refusal_items_spicy_all.json`
+(93 items, 37/93 split), panel = 6 teachers + THREE students: R1-distill (R1, clean GT), Hermes-3-70B
+(GPT-4 synthetic lineage, SAME Llama base, soft GT), WizardLM-2-8x22B (GPT-4 Evol-Instruct, Mixtral
+base). $0.85.
+
+- **Teacher separability CONFIRMED at 2x sample: mean off-diag r 0.126 → 0.084.** Refusal discriminates
+  teachers; the earlier tame-battery collinearity is settled as an artifact.
+- **R1-distill (clean GT) works END TO END:** separates, moved decisively off its Llama base
+  (r 0.51 to R1 vs 0.13 to base), and now argmax = R1 (correct). CAVEAT: its R1-vs-GPT argmax FLIPPED
+  between the n=18 run (GPT) and n=37 run (R1) — the two closest teachers (R1/GPT correlate ~0.25) are
+  within noise; stable claim = "lands in the R1/GPT frontier-reasoning cluster, off its base."
+- **KEY FINDING — refusal fingerprints the SAFETY-TRAINING source, not the capability teacher.**
+  Hermes-3 and WizardLM-2 are GPT-4-capability-lineage but do NOT attribute to GPT on refusal
+  (Hermes argmax Claude, Wizard argmax R1). Why: base refuse-rates map to each lab's OWN safety posture
+  — Hermes 0.45 (Nous deliberately de-restricts), WizardLM 0.73 (MS heavy safety), Claude/Gemini 0.62.
+  They distilled GPT-4 for CAPABILITIES but re-set their REFUSAL boundaries in their own safety layer,
+  so refusal attributes to that layer. The channel behaves correctly against a GT label ("GPT") that's
+  right for capabilities, wrong for safety. R1-distill attributes to R1 because DeepSeek applied minimal
+  extra safety tuning, so R1's refusal behaviour shows through.
+
+**Consequence (sharpening, not a kill): channels attribute different ASPECTS.** Refusal -> safety
+lineage; reasoning-style -> reasoning-distillation teacher; opinion/values -> RLAIF-preference source.
+Admixture is "which teacher for WHICH ASPECT" — a per-aspect admixture (a safety-lineage decomposition,
+a reasoning-lineage decomposition), not one universal proportion. More defensible AND more interesting
+than either "dead" or "one-number 23andMe". Real build needs a PANEL of channels, one per aspect,
+each calibrated — reinforces the multi-signal frame (T-004.3).
+
+**Standing after firming:** discriminating signal exists + replicates (r 0.08, n=37); detection survives
+same-base confound; clean-GT case end-to-end correct; fine attribution is aspect-specific and, among
+similar teachers (R1/GPT), noisy at this n. Passive/admixture is a REAL buildable direction with an
+honest per-aspect ceiling. Nuisances logged: Qwen provider 400-blocks ~half the spicy items (discount
+Qwen); judge = gpt-4o-mini (single judge, unaudited). Battery + harness: `passive_refusal.py`,
+`refusal_items_spicy_all.json`; raw `passive_refusal_firm_raw.json`.
