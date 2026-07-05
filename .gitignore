@@ -20,3 +20,9 @@ dist/
 
 # Bulky raw eval dumps (regenerable from the harnesses)
 scratch/*_raw.json
+
+# Internal working docs — local only, never public
+AGENTS.md
+NOTES.md
+TASKS.md
+graduation-tracking.md
